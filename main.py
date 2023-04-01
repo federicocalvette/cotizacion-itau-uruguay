@@ -6,6 +6,8 @@ import xmltodict
 
 FECHA = str(datetime.now())
 
+URL = "https://www.itau.com.uy/inst/aci/cotiz.xml"
+
 MONEDA_ISO = {
     "US.D": ("USD", "Dolar"),
     "ARGP": ("ARG", "Peso Argentino"),
@@ -22,7 +24,7 @@ COTIZACION = {
     },
 }
 
-respuesta = requests.get("https://www.itau.com.uy/inst/aci/cotiz.xml")
+respuesta = requests.get(URL)
 
 if respuesta.status_code == 200:
 
