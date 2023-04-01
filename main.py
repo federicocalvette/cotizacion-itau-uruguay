@@ -1,7 +1,8 @@
+import json
+from datetime import datetime
+
 import requests
 import xmltodict
-from datetime import datetime
-import json
 
 FECHA = str(datetime.now())
 
@@ -37,7 +38,5 @@ for cotizacion in lista_cotizaciones:
             'compra': cotizacion['compra'],
             'venta': cotizacion['venta']
         }
-
-
 
 print(json.dumps(COTIZACION, sort_keys=False, indent=4))    
