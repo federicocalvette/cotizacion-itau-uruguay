@@ -24,19 +24,24 @@ COTIZACION = {
 
 respuesta = requests.get("https://www.itau.com.uy/inst/aci/cotiz.xml")
 
-respuesta_diccionario = xmltodict.parse(respuesta.content)
+if respuesta.status_code == 200:
 
-lista_cotizaciones = respuesta_diccionario["root"]["cotizacion"]
+    respuesta_diccionario = xmltodict.parse(respuesta.content)
 
-for cotizacion in lista_cotizaciones:
+    lista_cotizaciones = respuesta_diccionario["root"]["cotizacion"]
 
-    if cotizacion["moneda"] in MONEDA_ISO:
+    for cotizacion in lista_cotizaciones:
 
-        COTIZACION["cotizacion"][MONEDA_ISO[cotizacion["moneda"]][0]] = {
-            "nombre": MONEDA_ISO[cotizacion["moneda"]][1],
-            "iso": MONEDA_ISO[cotizacion["moneda"]][0],
-            "compra": cotizacion["compra"],
-            "venta": cotizacion["venta"],
-        }
+        if cotizacion["moneda"] in MONEDA_ISO:
 
-print(json.dumps(COTIZACION, sort_keys=False, indent=4))
+            COTIZACION["cotizacion"][MONEDA_ISO[cotizacion["moneda"]][0]] = {
+                "nombre": MONEDA_ISO[cotizacion["moneda"]][1],
+                "iso": MONEDA_ISO[cotizacion["moneda"]][0],
+                "compra": cotizacion["compra"],
+                "venta": cotizacion["venta"],
+            }
+
+    print(json.dumps(COTIZACION, sort_keys=False, indent=4))
+
+else:
+    print('No se pudo obtener una respuesta satisfactoria del servicio de Itaú.')
